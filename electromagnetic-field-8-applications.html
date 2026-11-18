@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电磁场中的 8 个实际应用</title>
+<style>
+:root{
+  --bg:#eef2f8; --card:#ffffff; --ink:#15304d; --sub:#5b6b7d; --line:#d9e2ed;
+  --teal:#0d7c86; --red:#df5238; --blue:#2563eb; --gold:#c98a10; --soft:#f6f9fd;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC","SimHei",sans-serif;line-height:1.6}
+header{background:linear-gradient(120deg,#123a5e,#1d6b78);color:#fff;padding:20px 24px 16px;text-align:center}
+header h1{margin:0;font-size:30px;letter-spacing:2px}
+header p{margin:6px 0 0;font-size:15px;opacity:.9}
+.globalbar{max-width:1180px;margin:14px auto 0;display:flex;justify-content:flex-end;gap:10px}
+button{font-family:inherit;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:7px 14px;font-size:14px;transition:.15s}
+button:hover{border-color:var(--teal);color:var(--teal)}
+button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+button.primary:hover{background:#0a6670;color:#fff}
+nav{max-width:1180px;margin:12px auto;display:flex;gap:8px;flex-wrap:wrap;padding:0 10px}
+nav a{text-decoration:none;color:var(--sub);background:#fff;border:1px solid var(--line);border-radius:20px;padding:5px 13px;font-size:13px;transition:.15s}
+nav a:hover,nav a.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.card{max-width:1180px;margin:16px auto;background:var(--card);border-radius:14px;box-shadow:0 3px 16px rgba(21,48,77,.07);overflow:hidden;border:1px solid var(--line)}
+.card-hd{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,#f8fbff,#fff)}
+.badge{font-size:13px;color:#fff;background:var(--teal);padding:3px 10px;border-radius:5px;white-space:nowrap}
+.badge.app{background:#1f78b4}.badge.measure{background:#c98a10}.badge.motion{background:#df5238}
+.num{font-size:30px;font-weight:800;color:var(--teal);line-height:1}
+.card-hd h2{font-size:24px;margin:0}
+.motto{font-size:15px;color:#9c432c;margin-left:auto;flex:1 1 340px;min-width:260px}
+.card-bd{display:grid;grid-template-columns:minmax(0,1.32fr) minmax(330px,1fr);gap:18px;padding:18px}
+@media(max-width:900px){.card-bd{grid-template-columns:1fr}.motto{margin-left:0}}
+.canvas-wrap{background:#fbfdff;border:1px solid var(--line);border-radius:10px;padding:8px}
+canvas{width:100%;display:block;border-radius:6px}
+.ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+.ctrl label{font-size:13px;color:var(--sub);white-space:nowrap}
+input[type=range]{flex:1;min-width:110px;accent-color:var(--teal)}
+.readout{font-size:13px;background:#eaf2fb;color:#15456e;border-radius:6px;padding:4px 9px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.eqbox{background:var(--soft);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:9px;padding:10px 14px}
+.card.measure .eqbox{border-left-color:var(--gold)}
+.card.motion .eqbox{border-left-color:var(--red)}
+.eqbox h3{margin:2px 0 8px;font-size:14px;color:var(--sub);font-weight:normal;letter-spacing:1px}
+.eq{display:flex;gap:10px;align-items:baseline;font-size:18px;margin:9px 0;line-height:1.45}
+.eq .n{flex:0 0 21px;height:21px;border-radius:50%;background:var(--teal);color:#fff;font-size:12px;display:inline-grid;place-items:center;vertical-align:middle}
+.card.measure .eq .n{background:var(--gold)}.card.motion .eq .n{background:var(--red)}
+.eq .body{flex:1}
+.frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;line-height:1.12;margin:0 2px;font-size:.86em}
+.frac .up{border-bottom:1px solid currentColor;padding:0 4px}
+.frac .dn{padding:0 4px}
+i{font-family:Georgia,"Times New Roman",serif}
+sub,sup{font-size:.68em;line-height:0}
+.tip{margin-top:12px;background:#fff8e9;border:1px solid #f0dfb4;border-radius:9px;padding:10px 13px;font-size:14.5px;line-height:1.75}
+.tip b{color:#a46608}
+.principle{margin-bottom:12px;background:#eaf4f6;border:1px solid #cfe2e6;border-left:4px solid var(--teal);border-radius:9px;padding:10px 14px;font-size:14.5px;line-height:1.72;color:#274a5e}
+.principle h3{margin:2px 0 6px;font-size:14px;color:var(--sub);font-weight:normal;letter-spacing:1px}
+.principle b{color:var(--teal)}
+.card.measure .principle{background:#fdf8ec;border-color:#f0e2c1;border-left-color:var(--gold)}
+.card.measure .principle b{color:var(--gold)}
+.card.motion .principle{background:#fdf1ee;border-color:#f2d9d2;border-left-color:var(--red)}
+.card.motion .principle b{color:var(--red)}
+footer{max-width:1180px;margin:24px auto 40px;text-align:center;color:var(--sub);font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <h1>电磁场中的 8 个实际应用</h1>
+  <p>速度选择器 · 磁流体发电机 · 电磁流量计 · 霍尔效应 · 质谱仪 · 回旋加速器 · 磁电式电表 · 圆周与螺旋</p>
+</header>
+<div class="globalbar"><button class="primary" id="globalBtn">⏸ 全部暂停</button></div>
+<nav id="nav">
+  <a href="#m1">01 速度选择器</a><a href="#m2">02 磁流体发电机</a><a href="#m3">03 电磁流量计</a><a href="#m4">04 霍尔效应</a>
+  <a href="#m5">05 质谱仪</a><a href="#m6">06 回旋加速器</a><a href="#m7">07 磁电式电表</a><a href="#m8">08 圆周与螺旋</a>
+</nav>
+<main>
+
+<!-- 01 -->
+<section class="card" id="m1">
+  <div class="card-hd"><span class="badge app">复合场</span><span class="num">01</span><h2>速度选择器</h2>
+    <span class="motto">见到“正交电磁场 + 直线穿过” → 两力平衡，速度唯一。</span></div>
+  <div class="card-bd"><div>
+    <div class="canvas-wrap"><canvas data-c="1"></canvas></div>
+    <div class="ctrl"><button data-play="1" class="primary">⏸ 暂停</button><button data-reset="1">↺ 重播</button>
+      <label>入射速度 v</label><input type="range" data-p="1" min="3000" max="7000" step="250" value="5000">
+      <span class="readout" data-r="1">v₀ = —</span></div>
+  </div><div>
+    <div class="principle"><h3>原理</h3>
+      让带电粒子穿过相互垂直的匀强电场和匀强磁场。粒子同时受恒定电场力 <i>qE</i> 与随速度变化的洛伦兹力 <i>qvB</i>，两力方向相反：只有速度恰好满足 <i>qE</i>=<i>qvB</i>（<i>v</i>=<i>E</i>/<i>B</i>）的粒子<b>合力为零、沿直线穿过小孔 S</b>；速度偏大偏小的粒子受力失衡而偏转、被挡板拦住。所以它<b>只选速度</b>，与粒子的质量、电荷量、电性都无关。
+    </div>
+    <div class="eqbox"><h3>核心结论</h3>
+      <div class="eq"><span class="n">1</span><div class="body">平衡：<i>qE</i> = <i>qvB</i> → <i>v</i> = <span class="frac"><span class="up"><i>E</i></span><span class="dn"><i>B</i></span></span></div></div>
+      <div class="eq"><span class="n">2</span><div class="body">若板间距 <i>d</i>、电压 <i>U</i>：<i>v</i> = <span class="frac"><span class="up"><i>U</i></span><span class="dn"><i>Bd</i></span></span></div></div>
+      <div class="eq"><span class="n">3</span><div class="body"><i>v</i> &gt; <i>U</i>/<i>Bd</i> 向上偏；<i>v</i> &lt; 则向下偏</div></div>
+    </div>
+    <div class="tip"><b>教师点拨：</b>选择条件与电荷量、质量、电性<b>均无关</b>——正负粒子的电场力和洛伦兹力同时反向，依然平衡。它只“选速度”，不选粒子。注意电场方向必须与洛伦兹力方向相反，否则无法平衡。</div>
+  </div></div>
+</section>
+
+<!-- 02 -->
+<section class="card app" id="m2">
+  <div class="card-hd"><span class="badge app">复合场</span><span class="num">02</span><h2>磁流体发电机</h2>
+    <span class="motto">见到“导电流体流经磁场” → 洛伦兹力分离正负电荷，两极生电。</span></div>
+  <div class="card-bd"><div>
+    <div class="canvas-wrap"><canvas data-c="2"></canvas></div>
+    <div class="ctrl"><button data-play="2" class="primary">⏸ 暂停</button><button data-reset="2">↺ 重播</button>
+      <label>流体速度 v</label><input type="range" data-p="2" min="10" max="100" step="5" value="50">
+      <span class="readout" data-r="2">电动势 —</span></div>
+  </div><div>
+    <div class="principle"><h3>原理</h3>
+      让高温电离的等离子体高速流过磁场。正负离子受洛伦兹力方向相反，分别被推向上下极板并堆积，两极间产生电势差。电荷越积越多、电场 <i>E</i> 越来越强，直到 <i>qE</i>=<i>qvB</i> 时不再堆积，电压稳定在 <i>ε</i>=<i>Bdv</i>。接上负载后电荷被导走，洛伦兹力继续分离电荷、<b>持续对外供电</b>——把流体的动能直接转化为电能。
+    </div>
+    <div class="eqbox"><h3>核心结论</h3>
+      <div class="eq"><span class="n">1</span><div class="body">过程① 偏转沉积：<i>qE</i> &lt; <i>qvB</i> → 电荷堆积、<i>E</i> 增大</div></div>
+      <div class="eq"><span class="n">2</span><div class="body">过程② 平衡匀速：<i>qE</i> = <i>qvB</i> → <i>E</i> = <i>vB</i></div></div>
+      <div class="eq"><span class="n">3</span><div class="body">电动势 <i>ε</i> = <i>Bdv</i>（<i>d</i> 为两极间距）</div></div>
+      <div class="eq"><span class="n">4</span><div class="body">接负载：<i>U</i> = <span class="frac"><span class="up"><i>εR</i></span><span class="dn"><i>R</i>+<i>r</i></span></span></div></div>
+    </div>
+    <div class="tip"><b>教师点拨：</b>本质是“运动导体切割磁感线”的微观版。判断极性别背结论：让正电荷随流体运动，用左手定则看它往哪极板跑，那块板就是正极。<b>空载</b>时电荷积累到电场力抵消洛伦兹力（<i>qE</i>=<i>qvB</i>），电压达到 ε；<b>接负载</b>后电荷被导走，洛伦兹力继续分离电荷，持续对外供电。</div>
+  </div></div>
+</section>
+
+<!-- 03 -->
+<section class="card measure" id="m3">
+  <div class="card-hd"><span class="badge measure">测量仪器</span><span class="num">03</span><h2>电磁流量计</h2>
+    <span class="motto">见到“测导电液体流量” → 磁场 + 两电极，电压正比于流速。</span></div>
+  <div class="card-bd"><div>
+    <div class="canvas-wrap"><canvas data-c="3"></canvas></div>
+    <div class="ctrl"><button data-play="3" class="primary">⏸ 暂停</button><button data-reset="3">↺ 重播</button>
+      <label>流速 v</label><input type="range" data-p="3" min="0.5" max="5" step="0.25" value="2">
+      <span class="readout" data-r="3">Q = —</span></div>
+  </div><div>
+    <div class="principle"><h3>原理</h3>
+      让导电液体流过磁场，液体中的正负离子受洛伦兹力上下分离，在管壁上下电极间建立电势差。它经历与发电机相同的<b>自平衡</b>过程：电荷堆积 → 电场增强 → <i>qE</i>=<i>qvB</i> 时电压稳定在 <i>U</i>=<i>Bdv</i>。电压表高内阻、<b>只测压不取电流</b>；因 <i>Q</i> ∝ <i>U</i>，表盘可直接刻度成流量，且无转动部件、不阻碍流动。
+    </div>
+    <div class="eqbox"><h3>核心结论</h3>
+      <div class="eq"><span class="n">1</span><div class="body">过程① 偏转沉积：<i>qE</i> &lt; <i>qvB</i>，电荷堆积、<i>E</i> 增大</div></div>
+      <div class="eq"><span class="n">2</span><div class="body">过程② 平衡：<i>qE</i> = <i>qvB</i> → <i>E</i> = <i>vB</i>，离子匀速直线</div></div>
+      <div class="eq"><span class="n">3</span><div class="body">电极电压 <i>U</i> = <i>Ed</i> = <i>Bdv</i>（<i>d</i> 为管径）</div></div>
+      <div class="eq"><span class="n">4</span><div class="body">流量 <i>Q</i> = <span class="frac"><span class="up"><i>πd</i><sup>2</sup></span><span class="dn">4</span></span><i>v</i> = <span class="frac"><span class="up"><i>πdU</i></span><span class="dn">4<i>B</i></span></span> ∝ <i>U</i></div></div>
+    </div>
+    <div class="tip"><b>教师点拨：</b>和磁流体发电机是同一套<b>自平衡</b>物理，区别只在“取不取负载电流”：发电机接负载、持续供电，这里电压表高内阻、<b>只测压不取电流</b>。注意 <i>qvB</i> 恒定不变，变的是 <i>qE</i>——从 0 增到相等就稳定了。流量公式里管径 <i>d</i> 约掉一次方，优点：无机械转动部件、不阻碍流体、可测腐蚀性液体。</div>
+  </div></div>
+</section>
+
+<!-- 04 -->
+<section class="card measure" id="m4">
+  <div class="card-hd"><span class="badge measure">测量仪器</span><span class="num">04</span><h2>霍尔效应</h2>
+    <span class="motto">见到“通电薄片处在高磁场中” → 横向电压，判断载流子正负。</span></div>
+  <div class="card-bd"><div>
+    <div class="canvas-wrap"><canvas data-c="4"></canvas></div>
+    <div class="ctrl"><button data-play="4" class="primary">⏸ 暂停</button><button data-reset="4">↺ 重播</button>
+      <button data-toggle="4">载流子：电子</button>
+      <label>电流 I</label><input type="range" data-p="4" min="2" max="20" step="1" value="10">
+      <span class="readout" data-r="4">U<sub>H</sub> = —</span></div>
+  </div><div>
+    <div class="principle"><h3>原理</h3>
+      让电流通过置于磁场中的导电薄片。定向移动的载流子受洛伦兹力偏向薄片一侧堆积，形成横向的<b>霍尔电场</b> <i>E</i><sub>H</sub>。当 <i>qE</i><sub>H</sub>=<i>qvB</i> 时电压稳定，得 <i>U</i><sub>H</sub>=<i>IB</i>/<i>nqt</i>。电压的正负取决于载流子的电性，所以<b>测出极性就能判断是电子导电还是空穴导电</b>。
+    </div>
+    <div class="eqbox"><h3>核心结论</h3>
+      <div class="eq"><span class="n">1</span><div class="body">过程① 偏转沉积：<i>qE</i><sub>H</sub> &lt; <i>qvB</i>，载流子向一侧堆积、<i>E</i><sub>H</sub> 增大</div></div>
+      <div class="eq"><span class="n">2</span><div class="body">过程② 平衡：<i>qE</i><sub>H</sub> = <i>qvB</i> → <i>E</i><sub>H</sub> = <i>vB</i>，载流子匀速直线</div></div>
+      <div class="eq"><span class="n">3</span><div class="body">由 <i>I</i> = <i>nqvS</i> 得 <i>U</i><sub>H</sub> = <span class="frac"><span class="up"><i>IB</i></span><span class="dn"><i>nqt</i></span></span>（<i>t</i> 沿磁场方向厚度）</div></div>
+      <div class="eq"><span class="n">4</span><div class="body">电压正负 → 判断载流子是电子还是空穴</div></div>
+    </div>
+    <div class="tip"><b>教师点拨：</b><i>t</i> 是<b>沿磁场方向</b>的厚度，不是薄片的宽或长，这是最容易错的地方。电子与空穴受洛伦兹力偏向<b>同一侧</b>，但堆积的电荷符号相反：电子导电时上表面带负电、电势低，空穴导电时上表面带正电、电势高——用电压表极性反推载流子类型，是高考常规考法。注意 <i>qvB</i> 恒定、变的是 <i>qE</i>，这一<b>自平衡</b>过程与磁流体发电机、电磁流量计同源。</div>
+  </div></div>
+</section>
+
+<!-- 05 -->
+<section class="card app" id="m5">
+  <div class="card-hd"><span class="badge app">粒子分析</span><span class="num">05</span><h2>质谱仪</h2>
+    <span class="motto">见到“加速后进入匀强磁场” → 半径由比荷决定，同位素分开。</span></div>
+  <div class="card-bd"><div>
+    <div class="canvas-wrap"><canvas data-c="5"></canvas></div>
+    <div class="ctrl"><button data-play="5" class="primary">⏸ 暂停</button><button data-reset="5">↺ 重播</button>
+      <label>加速电压 U</label><input type="range" data-p="5" min="4000" max="16000" step="1000" value="10000">
+      <span class="readout" data-r="5">落点间距 —</span></div>
+  </div><div>
+    <div class="principle"><h3>原理</h3>
+      <b>先加速、后偏转</b>：粒子经电压 <i>U</i> 加速得 <i>v</i>=√(2<i>qU</i>/<i>m</i>)，再进入匀强磁场走半圆，半径 <i>r</i>=<i>mv</i>/(<i>qB</i>) ∝ √(<i>m</i>/<i>q</i>)。比荷不同的离子半径不同，打在底片上的位置也不同（<i>x</i>=2<i>r</i>），于是按比荷大小分开排列成<b>质谱</b>——这就是分离同位素、测原子质量的依据。
+    </div>
+    <div class="eqbox"><h3>核心结论</h3>
+      <div class="eq"><span class="n">1</span><div class="body">加速：<i>qU</i> = <span class="frac"><span class="up">1</span><span class="dn">2</span></span><i>mv</i><sup>2</sup> → <i>v</i> = √<span class="frac"><span class="up">2<i>qU</i></span><span class="dn"><i>m</i></span></span></div></div>
+      <div class="eq"><span class="n">2</span><div class="body">偏转：<i>r</i> = <span class="frac"><span class="up"><i>mv</i></span><span class="dn"><i>qB</i></span></span> = √<span class="frac"><span class="up">2<i>mU</i></span><span class="dn"><i>qB</i><sup>2</sup></span></span></div></div>
+      <div class="eq"><span class="n">3</span><div class="body">偏转距离（直径）<i>x</i> = 2<i>r</i>；比荷 <span class="frac"><span class="up"><i>q</i></span><span class="dn"><i>m</i></span></span> = <span class="frac"><span class="up">8<i>U</i></span><span class="dn"><i>B</i><sup>2</sup><i>x</i><sup>2</sup></span></span></div></div>
+    </div>
+    <div class="tip"><b>教师点拨：</b>顺序不能乱：<b>先加速、后偏转</b>。粒子走半圆打回底片，偏转距离 <i>x</i> = 2<i>r</i> ∝ √<i>m</i>，所以质量大的落得远；比荷不相等的离子被分开，<b>按比荷大小顺序排列</b>，这就是分离同位素的依据。若前面加了速度选择器，则 <i>r</i> ∝ <i>m</i>/<i>q</i>，两种方案的依赖规律不同，别混用。</div>
+  </div></div>
+</section>
+
+<!-- 06 -->
+<section class="card motion" id="m6">
+  <div class="card-hd"><span class="badge motion">回旋</span><span class="num">06</span><h2>回旋加速器</h2>
+    <span class="motto">见到“D 形盒 + 交变电场” → 周期与速度无关，电压只管圈数。</span></div>
+  <div class="card-bd"><div>
+    <div class="canvas-wrap"><canvas data-c="6"></canvas></div>
+    <div class="ctrl"><button data-play="6" class="primary">⏸ 暂停</button><button data-reset="6">↺ 重播</button>
+      <label>加速电压 U</label><input type="range" data-p="6" min="2000" max="20000" step="1000" value="10000">
+      <span class="readout" data-r="6">E<sub>k max</sub> —</span></div>
+  </div><div>
+    <div class="principle"><h3>原理</h3>
+      用磁场让带电粒子回旋、用电场反复加速来获得高能粒子。D 形盒内只有磁场、做匀速半圆，窄缝里只有交变电场、过缝即加速。巧妙之处在于回旋周期 <i>T</i>=2π<i>m</i>/(<i>qB</i>)<b>与速度、半径都无关</b>，固定频率的电场就能保证每次过缝都被正向加速。半径逐圈增大到盒边缘引出，最大动能只由 <i>B</i> 和盒半径决定。
+    </div>
+    <div class="eqbox"><h3>核心结论</h3>
+      <div class="eq"><span class="n">1</span><div class="body">回旋周期 <i>T</i> = <span class="frac"><span class="up">2<i>πm</i></span><span class="dn"><i>qB</i></span></span>，与 <i>v</i>、<i>r</i> 无关</div></div>
+      <div class="eq"><span class="n">2</span><div class="body">电场频率 <i>f</i> = <span class="frac"><span class="up"><i>qB</i></span><span class="dn">2<i>πm</i></span></span>（必须与回旋频率相同）</div></div>
+      <div class="eq"><span class="n">3</span><div class="body">最大动能 <i>E</i><sub>k max</sub> = <span class="frac"><span class="up"><i>q</i><sup>2</sup><i>B</i><sup>2</sup><i>R</i><sup>2</sup></span><span class="dn">2<i>m</i></span></span>，与加速电压无关</div></div>
+    </div>
+    <div class="tip"><b>教师点拨：</b>先看运动：<b>D 盒内只有磁场，粒子做匀速半圆</b>（橙色弧，磁场不做功）；<b>缝隙里只有电场，粒子沿水平方向做匀加速直线</b>（绿色直线，电场做功）。两种运动严格分工，别把电场区也画成圆弧。半圆半径 <i>r</i> ∝ √<i>k</i>（第 <i>k</i> 次加速后），不是线性增大。最反直觉的一条：<b>加大加速电压并不能提高最大动能</b>，只能减少圈数、缩短加速时间；要提速只能加大磁场或 D 盒半径。周期与速度无关是经典力学的巧合，速度接近光速时失效——这正是回旋加速器的能量上限。</div>
+  </div></div>
+</section>
+
+<!-- 07 -->
+<section class="card motion" id="m7">
+  <div class="card-hd"><span class="badge motion">安培力</span><span class="num">07</span><h2>磁电式电流表</h2>
+    <span class="motto">见到“线圈在辐向磁场中转动” → 安培力矩正比于电流，刻度均匀。</span></div>
+  <div class="card-bd"><div>
+    <div class="canvas-wrap"><canvas data-c="7"></canvas></div>
+    <div class="ctrl"><button data-play="7" class="primary">⏸ 暂停</button><button data-reset="7">↺ 重播</button>
+      <label>电流 I</label><input type="range" data-p="7" min="0" max="10" step="0.5" value="6">
+      <span class="readout" data-r="7">偏角 θ = —</span></div>
+  </div><div>
+    <div class="principle"><h3>原理</h3>
+      把通电线圈放在蹄形磁铁与圆柱形铁芯之间的<b>辐向磁场</b>中。辐向磁场让线圈无论转到哪个角度，两条边始终垂直切割磁感线，安培力矩 <i>M</i>=<i>NBIS</i> 恒定；线圈转动时游丝产生反抗力矩 <i>M</i>′=<i>kθ</i>。平衡时 <i>θ</i>=(<i>NBS</i>/<i>k</i>)<i>I</i>，偏角与电流成正比，所以<b>刻度均匀</b>。
+    </div>
+    <div class="eqbox"><h3>核心结论</h3>
+      <div class="eq"><span class="n">1</span><div class="body">辐向磁场中安培力矩 <i>M</i> = <i>NBIS</i>，与转角无关</div></div>
+      <div class="eq"><span class="n">2</span><div class="body">游丝反抗力矩 <i>M</i>′ = <i>kθ</i></div></div>
+      <div class="eq"><span class="n">3</span><div class="body">平衡：<i>θ</i> = <span class="frac"><span class="up"><i>NBS</i></span><span class="dn"><i>k</i></span></span><i>I</i> → 刻度均匀</div></div>
+    </div>
+    <div class="tip"><b>教师点拨：</b>刻度均匀的关键不是“磁场匀强”，而是<b>辐向磁场</b>让线圈无论转到哪里，边都垂直切割磁感线，安培力矩恒定。若换成普通匀强磁场，力矩随角度按 cos 变化，刻度就不均匀了——这是教材插图容易被忽略的细节。</div>
+  </div></div>
+</section>
+
+<!-- 08 -->
+<section class="card motion" id="m8">
+  <div class="card-hd"><span class="badge motion">洛伦兹力</span><span class="num">08</span><h2>圆周与螺旋</h2>
+    <span class="motto">见到“速度斜射入磁场” → 分解垂直与平行，圆周叠加匀速直线。</span></div>
+  <div class="card-bd"><div>
+    <div class="canvas-wrap"><canvas data-c="8"></canvas></div>
+    <div class="ctrl"><button data-play="8" class="primary">⏸ 暂停</button><button data-reset="8">↺ 重播</button>
+      <label>入射角 θ</label><input type="range" data-p="8" min="15" max="90" step="5" value="60">
+      <span class="readout" data-r="8">r / T / h —</span></div>
+  </div><div>
+    <div class="principle"><h3>原理</h3>
+      粒子以速度 <i>v</i> 斜射入匀强磁场，分解为垂直分量 <i>v</i><sub>⊥</sub>=<i>v</i>sin<i>θ</i> 与平行分量 <i>v</i><sub>∥</sub>=<i>v</i>cos<i>θ</i>。垂直分量做匀速圆周（洛伦兹力提供向心力），平行分量不受力、保持匀速直线；两者叠加成<b>螺旋线</b>，每转一圈沿磁场方向前进一个螺距 <i>h</i>=<i>v</i><sub>∥</sub><i>T</i>。
+    </div>
+    <div class="eqbox"><h3>核心结论</h3>
+      <div class="eq"><span class="n">1</span><div class="body"><i>v</i><sub>⊥</sub> = <i>v</i>sin<i>θ</i> → 圆周半径 <i>r</i> = <span class="frac"><span class="up"><i>mv</i>sin<i>θ</i></span><span class="dn"><i>qB</i></span></span></div></div>
+      <div class="eq"><span class="n">2</span><div class="body">周期 <i>T</i> = <span class="frac"><span class="up">2<i>πm</i></span><span class="dn"><i>qB</i></span></span>，与速率、角度无关</div></div>
+      <div class="eq"><span class="n">3</span><div class="body"><i>v</i><sub>∥</sub> = <i>v</i>cos<i>θ</i> → 螺距 <i>h</i> = <i>v</i>cos<i>θ</i>·<i>T</i></div></div>
+    </div>
+    <div class="tip"><b>教师点拨：</b>洛伦兹力永远垂直于速度，<b>不做功</b>——只改变方向不改变速率。平行磁场的分量不受力，所以螺旋是“圆周 + 匀速直线”的叠加。磁场对运动电荷不做功这个结论，是判断电磁场能量问题的第一依据。</div>
+  </div></div>
+</section>
+</main>
+<footer>物理内核经 Node 数值积分逐项校验 · Canvas 2D 手写管线 · 素材参考 B 站公开教学视频（个人学习使用）</footer>
+
+<script>
+const W=720,H=400;
+const C={ink:'#15304d',sub:'#7a8a9b',grid:'#e8eef5',blue:'#3573c8',red:'#e04a35',
+         orange:'#ef9a1f',green:'#1aaa7a',plate:'#aab6c4',dash:'#c2ceda'};
+function txt(ctx,s,x,y,size=15,color=C.ink,align='left',weight='normal'){
+  ctx.fillStyle=color;ctx.font=weight+' '+size+'px "Microsoft YaHei",sans-serif';
+  ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(s,x,y);ctx.textAlign='left';
+}
+function seg(ctx,x1,y1,x2,y2,color,w=2,dash=null){
+  ctx.save();ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
+  ctx.strokeStyle=color;ctx.lineWidth=w;if(dash)ctx.setLineDash(dash);ctx.stroke();ctx.restore();
+}
+function arr(ctx,x1,y1,x2,y2,color,w=2,head=9){
+  const a=Math.atan2(y2-y1,x2-x1);seg(ctx,x1,y1,x2,y2,color,w);
+  ctx.save();ctx.beginPath();ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-head*Math.cos(a-0.42),y2-head*Math.sin(a-0.42));
+  ctx.lineTo(x2-head*Math.cos(a+0.42),y2-head*Math.sin(a+0.42));
+  ctx.closePath();ctx.fillStyle=color;ctx.fill();ctx.restore();
+}
+function poly(ctx,pts,color,w=2,dash=null){
+  if(pts.length<2)return;ctx.save();ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);
+  for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);
+  ctx.strokeStyle=color;ctx.lineWidth=w;ctx.lineJoin='round';if(dash)ctx.setLineDash(dash);ctx.stroke();ctx.restore();
+}
+function dot(ctx,x,y,r,color,halo=false){
+  if(halo){const g=ctx.createRadialGradient(x,y,0,x,y,r*3.2);
+    g.addColorStop(0,color+'99');g.addColorStop(1,color+'00');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r*3.2,0,7);ctx.fill();}
+  ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();
+}
+function gridBg(ctx){
+  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle=C.grid;ctx.lineWidth=1;
+  for(let x=36;x<W;x+=36){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=32;y<H;y+=36){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+}
+function cross(ctx,x1,y1,x2,y2,n,color='#9aa9bd'){
+  for(let i=0;i<n;i++){
+    const x=x1+(x2-x1)*((i%6)+0.5)/6, y=y1+(y2-y1)*(Math.floor(i/6)+0.5)/Math.ceil(n/6);
+    seg(ctx,x-4,y-4,x+4,y+4,color,1.4);seg(ctx,x+4,y-4,x-4,y+4,color,1.4);
+  }
+}
+// 垂直纸面向外的磁场（⊙ 圆点带环）
+function dotsB(ctx,x1,y1,x2,y2,n,color='#9aa9bd'){
+  for(let i=0;i<n;i++){
+    const x=x1+(x2-x1)*((i%6)+0.5)/6, y=y1+(y2-y1)*(Math.floor(i/6)+0.5)/Math.ceil(n/6);
+    ctx.beginPath();ctx.arc(x,y,5,0,7);ctx.strokeStyle=color;ctx.lineWidth=1.2;ctx.stroke();
+    dot(ctx,x,y,1.8,color);
+  }
+}
+function meter(ctx,x,y,val,max,label){
+  ctx.save();ctx.beginPath();ctx.arc(x,y,26,Math.PI,0);ctx.strokeStyle=C.ink;ctx.lineWidth=2;ctx.stroke();
+  const a=Math.PI-Math.PI*Math.min(1,val/max);
+  seg(ctx,x,y,x+20*Math.cos(a),y-20*Math.sin(a),C.red,2.4);
+  dot(ctx,x,y,3,C.ink);txt(ctx,label,x,y+16,12,C.sub,'center');ctx.restore();
+}
+
+const models=[null];
+
+/* 01 速度选择器 */
+models[1]={duration:3.2,params:{v:5000},
+ draw(ctx,p,m){
+  gridBg(ctx);const v=m.params.v,v0=5000,E=2000,B=0.4,x0=80,x1=540,yt=95,yb=305,y0=200;
+  seg(ctx,x0,yt,x1,yt,C.plate,6);seg(ctx,x0,yb,x1,yb,C.plate,6);
+  txt(ctx,'+',x0-18,yt,20,C.red);txt(ctx,'−',x0-18,yb,20,C.blue);
+  cross(ctx,120,yt+12,520,yb-12,36);
+  txt(ctx,'B 垂直纸面向里',320,350,13,C.sub,'center');
+  const s=(v-v0)/2000, xp=x0+50+(x1-x0-80)*p, yp=y0-s*70*p*p;
+  const path=[];for(let t=0;t<=p;t+=0.02){const xx=x0+50+(x1-x0-80)*t;path.push([xx,y0-s*70*t*t]);}
+  poly(ctx,path,C.orange,2.6);dot(ctx,xp,yp,7,C.red,true);
+  arr(ctx,xp,yp,xp+46,yp,C.blue,2.4,9);txt(ctx,'v',xp+54,yp,14,C.blue);
+  // 受力箭头：上板+下板− → 正电荷 E 向下、洛伦兹力向上（B向里、v向右）
+  // 两力始终同时存在，长度正比于大小；v=v0 时等长反向，恰好平衡
+  const fE=46, fB=46*(v/v0), Lb=Math.min(72,fB), Le=Math.min(72,fE);
+  arr(ctx,xp,yp,xp,yp-Lb,C.red,2.4,8);txt(ctx,'qvB',xp+8,yp-Lb-6,12,C.red);
+  arr(ctx,xp,yp,xp,yp+Le,C.green,2.4,8);txt(ctx,'qE',xp+8,yp+Le+8,12,C.green);
+  // 教材节练习：直线通过的小孔 S
+  seg(ctx,x1,yt-2,x1,yt+30,C.ink,2);seg(ctx,x1,yb+2,x1,yb-30,C.ink,2);
+  txt(ctx,'S',x1+16,y0,15,C.green,'center','bold');
+  txt(ctx,Math.abs(v-v0)<1?'✓ v=E/B 直线通过 S':(v>v0?'qvB>qE 上偏，通不过':'qvB<qE 下偏，通不过'),600,150,15,Math.abs(v-v0)<1?C.green:C.red,'center','bold');
+  txt(ctx,'v = E/B = '+v0+' m/s',600,190,14,C.sub,'center');
+ }
+};
+
+/* 02 磁流体发电机 —— 两阶段：① 偏转沉积建电场 ② 平衡后匀速直线 */
+models[2]={duration:4.2,params:{v:50},
+ draw(ctx,p,m){
+  gridBg(ctx);
+  const v=m.params.v,B=0.8,d=0.16,eps=B*d*v;
+  const x0=82,x1=496,y0=200,half=68,yt=y0-half,yb=y0+half;
+  // 两阶段：p<0.55 建电场（偏转减弱）；p≥0.55 平衡稳态（匀速直线）
+  const pSwitch=0.55, build=Math.min(1,p/pSwitch);   // 电场建立程度 0→1
+  const phase2=p>=pSwitch, devScale=phase2?0:(1-build); // 偏转幅度系数
+
+  // 两极板（上正下负：正离子受洛伦兹力向上）
+  seg(ctx,x0,yt,x1,yt,C.plate,7);seg(ctx,x0,yb,x1,yb,C.plate,7);
+  txt(ctx,'上极板（正）',x0,yt-14,13,C.red);
+  txt(ctx,'下极板（负）',x0,yb+18,13,C.blue);
+  cross(ctx,x0+14,yt+16,x1-14,yb-16,30);
+  txt(ctx,'B 向里 ⊗',x0+18,yt+16,12,C.sub);
+  arr(ctx,x0+12,y0-30,x0+112,y0-30,C.green,2,8);
+  txt(ctx,'等离子体 v = '+v+' m/s',x0+122,y0-30,13,C.sub);
+
+  // 极板堆积电荷：随 build 增多；平衡后铺满
+  const n=Math.max(0,Math.round(build*6));
+  for(let i=0;i<n;i++){
+    const xx=x1-26-i*60;if(xx<x0+16)break;
+    txt(ctx,'+',xx,yt,17,C.red,'center');txt(ctx,'−',xx,yb,17,C.blue,'center');
+  }
+  // 电场强度 E = build·vB（过程① 逐渐增大，过程② 稳定在 vB）
+  const E=vB=b=>b*v*B, Ecur=phase2?v*B:E(build);
+  if(build>0.02){
+    arr(ctx,x0+300,y0-14,x0+300,y0+14,C.green,1.6+1.4*build,7);
+    txt(ctx,'E = '+Ecur.toFixed(1)+' V/m',x0+300,y0-26,12,C.green,'center');
+  }
+
+  // 离子运动：偏转量 = half·devScale·(x/L)²，平衡后 devScale=0 → 匀速直线
+  const N=8;
+  for(let i=0;i<N;i++){
+    const ph=(p*2.3+i/N)%1;
+    if(ph<0.03||ph>0.995)continue;
+    const al=Math.min(1,ph/0.09,(1-ph)/0.05);
+    ctx.globalAlpha=al;
+    const xx=x0+ph*(x1-x0),dev=half*devScale*ph*ph;
+    dot(ctx,xx,y0-dev,4.4,C.red);
+    dot(ctx,xx,y0+dev,4.4,C.blue);
+    ctx.globalAlpha=1;
+  }
+  // 受力分析：F洛恒定、F电随 build 增大、合力缩短（画在流道内中部离子上）
+  const fx=x0+180,fy=y0;
+  const fLen=24, eLen=Math.max(0,fLen*build);
+  arr(ctx,fx,fy,fx,fy-fLen,C.red,2.4,8);txt(ctx,'qvB',fx-8,fy-fLen-3,11,C.red,'right');
+  if(eLen>2){arr(ctx,fx,fy,fx,fy+eLen,C.blue,2.4,8);txt(ctx,'qE',fx+8,fy+eLen+4,11,C.blue);}
+  // 轨迹参考线：过程① 显示渐弱的抛物线，过程② 显示直线
+  if(!phase2){
+    const traj=sg=>Array.from({length:30},(_,i)=>{const t=i/29;return [x0+t*(x1-x0),y0+sg*half*devScale*t*t];});
+    poly(ctx,traj(-1),'#e04a3566',1.4,[4,4]);poly(ctx,traj(1),'#3573c866',1.4,[4,4]);
+  }else seg(ctx,x0,y0,x1,y0,C.green+'88',1.6,[5,4]);
+
+  // 外电路 + 灯泡 + 电流
+  const xr=578;
+  seg(ctx,x1,yt,xr,yt,C.ink,2);seg(ctx,xr,yt,xr,yb,C.ink,2);seg(ctx,xr,yb,x1,yb,C.ink,2);
+  const g=ctx.createRadialGradient(xr,y0,0,xr,y0,34);
+  g.addColorStop(0,'#ffe08a99');g.addColorStop(1,'#ffe08a00');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(xr,y0,34,0,7);ctx.fill();
+  ctx.beginPath();ctx.arc(xr,y0,11,0,7);ctx.fillStyle='#fff3c4';ctx.fill();ctx.strokeStyle=C.ink;ctx.lineWidth=1.8;ctx.stroke();
+  seg(ctx,xr-6,y0-6,xr+6,y0+6,C.ink,1.4);seg(ctx,xr-6,y0+6,xr+6,y0-6,C.ink,1.4);
+  txt(ctx,'负载 R',xr+20,y0,13,C.sub);
+  arr(ctx,x1+14,yt-15,x1+72,yt-15,C.red,2,8);txt(ctx,'I',x1+46,yt-29,13,C.red);
+
+  // 阶段说明（画面下方两行）
+  if(phase2){
+    txt(ctx,'过程② 平衡：qE = qvB，合力为零 → 离子匀速直线通过',x0+8,344,14,C.green,'left','bold');
+    txt(ctx,'电势差稳定 ε = Bdv',x0+8,368,14,C.blue,'left','bold');
+  }else{
+    txt(ctx,'过程① 偏转沉积：qE < qvB，电荷打到极板',x0+8,344,14,C.red,'left','bold');
+    txt(ctx,'E、电压逐渐增大，电场力追上洛伦兹力…',x0+8,368,13,C.sub);
+  }
+  txt(ctx,'ε = Bdv = '+eps.toFixed(2)+' V',x0+300,368,14,C.blue,'left','bold');
+ }
+};
+
+/* 03 电磁流量计 —— 两阶段：① 偏转沉积建电场 ② 平衡后匀速直线（高内阻测压） */
+models[3]={duration:4.2,params:{v:2},
+ draw(ctx,p,m){
+  gridBg(ctx);
+  const v=m.params.v,B=0.6,d=0.1,U=B*d*v,Q=Math.PI*d*d/4*v;
+  const x0=90,x1=498,yt=136,yb=264,y0=200,cx=(x0+x1)/2,half=(yb-yt)/2;
+  // 两阶段：p<0.55 建电场（偏转减弱）；p≥0.55 平衡稳态（匀速直线）
+  const pSwitch=0.55, build=Math.min(1,p/pSwitch);
+  const phase2=p>=pSwitch, devScale=phase2?0:(1-build);
+
+  // 绝缘管道：流体从左向右流过
+  ctx.fillStyle='#eef4fa';ctx.fillRect(x0,yt,x1-x0,yb-yt);
+  seg(ctx,x0,yt,x1,yt,C.ink,2.5);seg(ctx,x0,yb,x1,yb,C.ink,2.5);
+  seg(ctx,x0,yt,x0,yb,C.ink,2.5);seg(ctx,x1,yt,x1,yb,C.ink,2.5);
+  // 磁场垂直纸面向里（⊗）——v 向右、B 向里 → 正离子受洛伦兹力向上，上电极为正
+  cross(ctx,x0+16,yt+14,x1-16,yb-14,30);
+  txt(ctx,'B 向里 ⊗',x0+22,yt+18,12,C.sub);
+  arr(ctx,x0+26,y0-42,x0+126,y0-42,C.green,2.2,9);
+  txt(ctx,'导电液体 v = '+v+' m/s',x0+134,y0-42,13,C.sub);
+
+  // 管壁电荷堆积：上正下负，随 build 增多；平衡后铺满
+  const nch=Math.max(0,Math.round(build*6));
+  for(let i=0;i<nch;i++){
+    const xx=x1-26-i*60;if(xx<x0+16)break;
+    txt(ctx,'+',xx,yt,15,C.red,'center');txt(ctx,'−',xx,yb,15,C.blue,'center');
+  }
+  // 场强 E = build·vB（过程① 增大，过程② 稳定在 vB）
+  const Ecur=build*v*B;
+  if(build>0.02){
+    arr(ctx,382,y0-14,382,y0+14,C.green,1.6+1.4*build,7);
+    txt(ctx,'E = '+Ecur.toFixed(2)+' V/m',382,y0-24,12,C.green,'center');
+  }
+
+  // 离子运动：偏转量 = half·devScale·(x/L)²，平衡后 devScale=0 → 匀速直线
+  const N=8;
+  for(let i=0;i<N;i++){
+    const ph=(p*2.3+i/N)%1;
+    if(ph<0.03||ph>0.995)continue;
+    const al=Math.min(1,ph/0.09,(1-ph)/0.05);
+    ctx.globalAlpha=al;
+    const xx=x0+ph*(x1-x0),dev=half*devScale*ph*ph;
+    dot(ctx,xx,y0-dev,4.2,C.red);
+    dot(ctx,xx,y0+dev,4.2,C.blue);
+    ctx.globalAlpha=1;
+  }
+  // 受力分析：qvB 恒定、qE 随 build 增大、合力缩短（画在流道下部空白处，避开顶部标题）
+  const fx=x0+150,fy=y0+30,fLen=20,eLen=Math.max(0,fLen*build);
+  arr(ctx,fx,fy,fx,fy-fLen,C.red,2.4,8);txt(ctx,'qvB',fx-7,fy-fLen+2,11,C.red,'right');
+  if(eLen>2){arr(ctx,fx,fy,fx,fy+eLen,C.blue,2.4,8);txt(ctx,'qE',fx+7,fy+eLen+2,11,C.blue);}
+  // 轨迹参考线：过程① 渐弱抛物线，过程② 直线
+  if(!phase2){
+    const traj=sg=>Array.from({length:30},(_,i)=>{const t=i/29;return [x0+t*(x1-x0),y0+sg*half*devScale*t*t];});
+    poly(ctx,traj(-1),'#e04a3566',1.4,[4,4]);poly(ctx,traj(1),'#3573c866',1.4,[4,4]);
+  }else seg(ctx,x0,y0,x1,y0,C.green+'88',1.6,[5,4]);
+
+  // 上下管壁电极（绿色粗线），上正下负
+  const ex=cx;
+  seg(ctx,ex-46,yt,ex+46,yt,C.green,5);seg(ctx,ex-46,yb,ex+46,yb,C.green,5);
+  txt(ctx,'电极 +',ex+66,yt-9,12,C.red,'center');
+  txt(ctx,'电极 −',ex+66,yb+19,12,C.blue,'center');
+  // 高内阻电压表：只测压不取电流（与磁流体发电机接负载的本质区别）
+  seg(ctx,ex,yt,ex,92,C.green,1.5);seg(ctx,ex,92,578,92,C.green,1.5);seg(ctx,578,92,578,172,C.green,1.5);
+  seg(ctx,ex,yb,ex,308,C.green,1.5);seg(ctx,ex,308,632,308,C.green,1.5);seg(ctx,632,308,632,228,C.green,1.5);
+  const Ucur=phase2?U:U*build;
+  meter(ctx,605,y0,Ucur,0.3,'U='+Ucur.toFixed(2)+'V');
+  txt(ctx,'高内阻测压，不取电流',605,y0+40,11,C.sub,'center');
+
+  // 阶段说明（画面下方两行）
+  if(phase2){
+    txt(ctx,'过程② 平衡：qE = qvB，合力为零 → 离子匀速直线通过',x0+8,344,13,C.green,'left','bold');
+    txt(ctx,'电势差稳定 U = Bdv',x0+8,366,13,C.blue,'left','bold');
+  }else{
+    txt(ctx,'过程① 偏转沉积：qE < qvB，电荷打到管壁',x0+8,344,13,C.red,'left','bold');
+    txt(ctx,'E、电压逐渐增大，电场力追上洛伦兹力…',x0+8,366,12,C.sub);
+  }
+  txt(ctx,'U = Bdv',470,344,13,C.blue,'left','bold');
+  txt(ctx,'Q = πdU/(4B) = '+Q.toFixed(3)+' m³/s',470,366,13,C.blue,'left','bold');
+ }
+};
+
+/* 04 霍尔效应（教材图1-23：立体导电薄板 + 垂直板面磁场 + 电流 + 两边聚集电荷 + 电压表） */
+models[4]={duration:3.6,params:{I:10,electron:true},
+ draw(ctx,p,m){
+  gridBg(ctx);
+  const I=m.params.I,B=0.5,n=8.5e28,q=1.6e-19,t=1e-3;
+  const UH=I*B/(n*q*t)*1e6;                 // 霍尔电压 μV（×1e6 换算，非 ×1e7）
+  const x0=150,x1=470,yt=140,yb=270,y0=(yt+yb)/2,dx=30,dy=-22;
+  const electron=!!m.params.electron, ion=electron?C.blue:C.red;
+  const dirNote=electron?'电子':'空穴';
+  const upSign=electron?'−':'+', dnSign=electron?'+':'−';
+  // 两阶段：p<0.55 偏转沉积建立霍尔电场；p≥0.55 平衡匀速直线
+  const pSwitch=0.55, build=Math.min(1,p/pSwitch);
+  const phase2=p>=pSwitch, devScale=phase2?0:(1-build);
+  const half=(yb-yt)/2-14;
+
+  // —— 立体导电薄板（教材图1-23）——
+  ctx.fillStyle='#dbe6f3';ctx.beginPath();
+  ctx.moveTo(x0,yt);ctx.lineTo(x1,yt);ctx.lineTo(x1+dx,yt+dy);ctx.lineTo(x0+dx,yt+dy);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#c5d4e6';ctx.beginPath();
+  ctx.moveTo(x1,yt);ctx.lineTo(x1,yb);ctx.lineTo(x1+dx,yb+dy);ctx.lineTo(x1+dx,yt+dy);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#eef4fa';ctx.fillRect(x0,yt,x1-x0,yb-yt);
+  ctx.strokeStyle=C.plate;ctx.lineWidth=2;ctx.strokeRect(x0,yt,x1-x0,yb-yt);
+  poly(ctx,[[x0,yt],[x0+dx,yt+dy],[x1+dx,yt+dy],[x1,yt]],C.plate,1.5);
+  poly(ctx,[[x1,yt],[x1+dx,yt+dy],[x1+dx,yb+dy],[x1,yb]],C.plate,1.5);
+  txt(ctx,'导电薄板',x0+dx+6,yt+dy-10,12,C.sub);
+  // 磁场垂直板面向里
+  cross(ctx,x0+16,yt+16,x1-16,yb-14,24);
+  txt(ctx,'B ⊗ 垂直板面向里',x0+18,yt+18,12,C.sub);
+  // 电流沿板长（教材：电流通过薄板）
+  arr(ctx,x0-72,y0,x0-8,y0,C.green,2.6,10);txt(ctx,'I',x0-86,y0,17,C.green);
+  txt(ctx,'电流 '+I+' A',x0-70,y0+22,12,C.sub);
+
+  // 载流子：电流向右、B 向里 → 电子/空穴都向上偏，但堆积电荷符号相反
+  const drift=electron?-1:1;   // 电子漂移与电流反向，空穴同向
+  for(let i=0;i<9;i++){
+    const s=(i*38+p*210)%(x1-x0-30), xx=x0+16+s;
+    const f=Math.min(1,s/150), dev=half*devScale*f*f, yy=y0-dev;
+    dot(ctx,xx,yy,3.8,ion);
+    arr(ctx,xx,yy,xx+drift*16,yy,ion,1.5,6);
+  }
+  // 受力分析（代表载流子）：qvB 恒定向上，qE 随 build 增大向下
+  const fx=x0+130, fy=y0-half*devScale*0.4;
+  const fLen=20, eLen=fLen*build;
+  arr(ctx,fx,fy,fx,fy-fLen,C.red,2.4,8);txt(ctx,'qvB',fx-6,fy-fLen-4,11,C.red,'right');
+  if(build>0.02){arr(ctx,fx,fy,fx,fy+eLen,C.blue,2.4,8);txt(ctx,'qE',fx+7,fy+eLen+4,11,C.blue);}
+
+  // 上下边堆积电荷：随 build 增多，平衡后铺满
+  const nb=Math.round(build*4);
+  for(let i=0;i<nb;i++){
+    const xx=x0+40+i*62; if(xx>x1-10)break;
+    txt(ctx,upSign,xx,yt-9,16,electron?C.blue:C.red,'center');
+    txt(ctx,dnSign,xx,yb+11,16,electron?C.red:C.blue,'center');
+  }
+  // 电压表接两边（教材：两边间产生电压），a 上、b 下
+  const ex=x1-46;
+  txt(ctx,'a',ex-16,yt-9,12,C.sub,'center');
+  txt(ctx,'b',ex-16,yb+11,12,C.sub,'center');
+  seg(ctx,ex,yt,ex,92,C.green,1.5);seg(ctx,ex,92,566,92,C.green,1.5);
+  seg(ctx,ex,yb,ex,318,C.green,1.5);seg(ctx,ex,318,566,318,C.green,1.5);
+  meter(ctx,574,y0,UH,0.8,'U_H ≈ '+UH.toFixed(2)+' μV');
+
+  // 阶段说明
+  if(phase2){
+    txt(ctx,'过程② 平衡：qE = qvB，合力为零 → 载流子匀速直线通过',300,352,13,C.green,'center','bold');
+    txt(ctx,'霍尔电压稳定：U_H = IB/(nqt)，a（上）电势'+(electron?'低':'高'),300,374,13,C.sub,'center');
+  }else{
+    txt(ctx,'过程① 偏转沉积：qE < qvB，载流子向上表面堆积、E 增大',300,352,13,C.orange,'center','bold');
+    const vd=I/(n*q*(2e-3)*(1e-3));
+    txt(ctx,'E = '+(build*vd*B).toExponential(1)+' V/m，逐步逼近 vB',300,374,13,C.sub,'center');
+  }
+  txt(ctx,'U_H = IB/(nqt)',300,60,16,C.blue,'center','bold');
+ }
+};
+
+/* 05 质谱仪 */
+models[5]={duration:3.6,params:{U:10000},
+ draw(ctx,p,m){
+  gridBg(ctx);const U=m.params.U,B=0.5,q=1.6e-19,u=1.66e-27;
+  const xA=110,xB=155,xMag=240,y0=130;       // 正极板/负极板/入射缝/入射高度
+  // ① 加速电场区（竖直两极板，粒子水平穿过）
+  plateV(ctx,xA,70,190,'+');plateV(ctx,xB,70,190,'−');
+  arr(ctx,xA+8,y0-24,xB-8,y0-24,C.green,2,7);
+  txt(ctx,'加速电场 U',(xA+xB)/2,40,13,C.green,'center');
+  // ② 入射缝 + 照相底片（180° 聚焦：半圆后打回同一条底片）
+  seg(ctx,xMag,70,xMag,350,C.green,5);
+  txt(ctx,'入射缝 S',xMag-14,58,12,C.green,'right');
+  txt(ctx,'底片',xMag+14,58,12,C.green);
+  // ③ 磁场区：正离子向下绕半圆 → 洛伦兹力向下 → B 向外（⊙）
+  dotsB(ctx,xMag+12,75,xMag+300,340,48);
+  txt(ctx,'B 向外 ⊙',xMag+250,58,12,C.sub);
+
+  // —— 时序：先加速（p<0.32），后偏转（p≥0.32）——
+  const pAcc=0.32;
+  const dAB=xB-xA,dBM=xMag-xB,t1=2*dAB/(dAB+2*dBM),t2=1-t1;
+  function accelPos(t){return t<t1?xA+dAB*(t/t1)**2:xB+dBM*(t-t1)/t2;}
+  function accelV(t){return t<t1?Math.sqrt(t/t1):1;}
+  const rPix=A=>Math.sqrt(2*(A*u)*U/q)/B*700;      // 像素半径 ∝ √(mU)/B
+  const accelerating=p<pAcc;
+
+  if(accelerating){
+    // 加速段：两种离子轨迹重合（同一条水平线），板间匀加速、板后匀速
+    const t=p/pAcc,xx=accelPos(t),vv=accelV(t);
+    poly(ctx,[[xA-30,y0],[xx,y0]],C.orange,2.4);
+    txt(ctx,'¹²C⁺ ¹⁴C⁺ 同时注入',xA-26,y0-22,12,C.sub);
+    // 速度箭头随速度变长（直观看出"越跑越快"）
+    arr(ctx,xx,y0,xx+18+34*vv,y0,C.red,2.4,8);
+    dot(ctx,xx,y0,7,C.red,true);
+    txt(ctx,t<t1?'板间匀加速：电场做功':'出电场后匀速飞行',xMag+150,150,14,C.green,'center');
+    txt(ctx,'v = √(2qU/m)',xMag+150,185,15,C.blue,'center','bold');
+    txt(ctx,'加速段：位置 ∝ t² → 速度越来越大',xMag+150,222,13,C.sub,'center');
+  }else{
+    // 偏转段：加速已完成，两离子进入磁场，按各自半径做半圆
+    poly(ctx,[[xA-30,y0],[xMag,y0]],C.orange,2.4);    // 已走过的加速轨迹保留
+    dot(ctx,xMag,y0,5,C.sub,true);
+    const tp=(p-pAcc)/(1-pAcc);
+    for(const A of [12,14]){
+      const r=rPix(A),ang=Math.PI*Math.min(1,tp*1.05);
+      const cx=xMag,cy=y0+r,n=Math.max(2,Math.floor(ang*32));
+      poly(ctx,Array.from({length:n},(_,i)=>{
+        const a=ang*i/Math.max(1,n-1);return [cx+r*Math.sin(a),cy-r*Math.cos(a)];
+      }),A===12?C.orange:C.blue,2.4);
+      dot(ctx,cx+r*Math.sin(ang),cy-r*Math.cos(ang),6,A===12?C.orange:C.red,true);
+      txt(ctx,A===12?'¹²C':'¹⁴C',xMag+r+12,y0+2*r+(A===12?-11:12),13,A===12?C.orange:C.blue);
+    }
+    txt(ctx,'偏转段：qvB = mv²/r，r = mv/(qB)',xMag+205,150,14,C.blue,'center');
+    txt(ctx,'r ∝ √m：质量大的半径大、落得远',xMag+205,187,13,C.sub,'center');
+    txt(ctx,'落点间距 = '+readMS(U).toFixed(2)+' cm',xMag+205,224,14,C.green,'center','bold');
+  }
+  txt(ctx,'先加速（电场直线）→ 后偏转（磁场圆弧）',410,374,14,C.sub,'center');
+ }
+};
+function readMS(U){const q=1.6e-19,u=1.66e-27,B=0.5,r=A=>Math.sqrt(2*A*u*U/q)/B;return 2*(r(14)-r(12))*100;}
+function plateV(ctx,x,y1,y2,sign){
+  seg(ctx,x,y1,x,y2,C.plate,7);
+  txt(ctx,sign,x+(x<360?-18:18),(y1+y2)/2,20,sign==='+'?C.red:C.blue,'center');
+}
+
+/* 06 回旋加速器 */
+models[6]={duration:4.2,params:{U:10000},
+ draw(ctx,p,m){
+  gridBg(ctx);
+  const U=m.params.U,cx=280,cy=200,R=125,gap=16;
+  // D 形盒：两盒直边分别在 x=cx±gap，中间留竖直缝隙（电场区）
+  ctx.fillStyle='#eef4fa';
+  ctx.beginPath();ctx.arc(cx+gap,cy,R,-Math.PI/2,Math.PI/2);ctx.fill();  // 右盒，向右凸
+  ctx.beginPath();ctx.arc(cx-gap,cy,R,Math.PI/2,3*Math.PI/2);ctx.fill(); // 左盒，向左凸
+  seg(ctx,cx+gap,cy-R,cx+gap,cy+R,C.ink,2);seg(ctx,cx-gap,cy-R,cx-gap,cy+R,C.ink,2);
+  cross(ctx,cx-gap-R+8,cy-R+8,cx+gap+R-8,cy+R-8,54);
+  txt(ctx,'D₁',cx-gap-R/2,cy,16,C.sub,'center');txt(ctx,'D₂',cx+gap+R/2,cy,16,C.sub,'center');
+
+  // 物理：第 k 次过缝后 Ek=kqU → v∝√k → r_k∝√k（不是线性）
+  //   D 盒内：只有磁场 → 匀速半圆（橙）
+  //   缝隙内：只有电场 → 匀加速直线（绿），这才是粒子在电场区的真实运动
+  const nSemi=Math.max(6,Math.min(16,Math.round(80000/U/2)*2));
+  const segs=[];let y=cy;
+  segs.push({type:'line',pts:[[cx,y],[cx+gap,y]]});           // 离子源出发，第一次加速
+  for(let k=1;k<=nSemi;k++){
+    const r=R*Math.sqrt(k/nSemi),right=k%2===1;
+    const xe=cx+(right?gap:-gap);
+    const yEnd=right?y-2*r:y+2*r, yc=(y+yEnd)/2;
+    const pts=[];
+    for(let j=0;j<=24;j++){
+      const a=right?Math.PI/2-Math.PI*j/24:-Math.PI/2+Math.PI*j/24;
+      pts.push([xe+(right?1:-1)*r*Math.cos(a),yc+r*Math.sin(a)]);
+    }
+    segs.push({type:'arc',pts,right,r});
+    y=yEnd;
+    segs.push({type:'line',pts:[[xe,y],[cx+(right?-gap:gap),y]]}); // 过缝：水平直线加速
+  }
+  const total=segs.reduce((s,g)=>s+g.pts.length,0);
+  let budget=Math.max(2,Math.floor(total*p));
+  const flat=[];
+  for(const g of segs){
+    if(budget<=0)break;
+    const take=Math.min(budget,g.pts.length), part=g.pts.slice(0,take);
+    if(part.length>=2)poly(ctx,part,g.type==='arc'?C.orange:C.green,g.type==='arc'?2.3:2.6);
+    else if(part.length===1)dot(ctx,part[0][0],part[0][1],3,C.red,true);
+    flat.push(...part);budget-=take;
+  }
+  // 粒子当前位置 + 速度方向箭头
+  if(flat.length>1){
+    const cur=flat[flat.length-1],prev=flat[flat.length-2];
+    dot(ctx,cur[0],cur[1],6,C.red,true);
+    const dx=cur[0]-prev[0],dy=cur[1]-prev[1],dl=Math.hypot(dx,dy)||1;
+    arr(ctx,cur[0],cur[1],cur[0]+dx/dl*20,cur[1]+dy/dl*20,C.red,2,7);
+  }
+  // 缝隙里的交变电场：方向每半圈翻转，保证每次过缝都被加速
+  arr(ctx,cx-14,cy-R-16,cx+14,cy-R-16,C.green,2.2,7);
+  txt(ctx,'缝隙 = 电场区：直线加速',cx,cy-R-30,12,C.green,'center');
+  txt(ctx,'离子源',cx-32,cy-12,12,C.sub,'center');
+  txt(ctx,'D盒 = 磁场区：匀速圆周　r ∝ √k（圈数为示意，实际数百圈）',cx,cy+R+28,11,C.sub,'center');
+  const q=1.6e-19,mass=1.67e-27,B=1.2,Rm=0.5;
+  const Emax=q*q*B*B*Rm*Rm/(2*mass)/1.6e-13;
+  txt(ctx,'T = 2πm/(qB) 与 v 无关',545,140,14,C.sub,'center');
+  txt(ctx,'Eₖmax = q²B²R²/(2m) = '+Emax.toFixed(1)+' MeV',545,180,14,C.blue,'center');
+  txt(ctx,'电压越大 → 圈数越少',545,220,14,C.orange,'center');
+ }
+};
+
+/* 07 磁电式电流表 */
+models[7]={duration:2.6,params:{I:6},
+ draw(ctx,p,m){
+  gridBg(ctx);const I=m.params.I,max=10,theta=Math.PI*0.42*I/max;
+  // 磁铁
+  ctx.fillStyle='#dde7f2';ctx.fillRect(90,90,40,220);ctx.fillRect(230,90,40,220);
+  txt(ctx,'N',110,110,20,C.red,'center','bold');txt(ctx,'S',250,110,20,C.blue,'center','bold');
+  // 线圈（随转动）
+  const cx=180,cy=200,Wc=26,Hc=70;
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(-theta);
+  ctx.strokeStyle=C.orange;ctx.lineWidth=2.6;
+  ctx.strokeRect(-Wc,-Hc,Wc*2,Hc*2);
+  ctx.restore();
+  // 指针 + 刻度
+  const px=430,py=200,rad=120;
+  ctx.save();ctx.beginPath();ctx.arc(px,py,rad,Math.PI*1.2,Math.PI*1.8);ctx.strokeStyle=C.ink;ctx.lineWidth=2;ctx.stroke();
+  for(let i=0;i<=10;i++){
+    const a=Math.PI*1.2+Math.PI*0.6*i/10;
+    const x1=px+rad*Math.cos(a),y1=py+rad*Math.sin(a);
+    const x2=px+(rad-12)*Math.cos(a),y2=py+(rad-12)*Math.sin(a);
+    seg(ctx,x1,y1,x2,y2,C.ink,1.4);
+  }
+  const a=Math.PI*1.2+Math.PI*0.6*I/max;
+  seg(ctx,px,py,px+(rad-8)*Math.cos(a),py+(rad-8)*Math.sin(a),C.red,2.6);
+  dot(ctx,px,py,5,C.ink);ctx.restore();
+  txt(ctx,'0',px-rad*0.8,py+62,12,C.sub);txt(ctx,'10',px+rad*0.8,py+62,12,C.sub);
+  txt(ctx,'θ ∝ I，刻度均匀',430,340,15,C.blue,'center','bold');
+  txt(ctx,'M = NBIS',110,340,16,C.sub,'center');
+ }
+};
+
+/* 08 圆周与螺旋 */
+models[8]={duration:3.8,params:{theta:60},
+ draw(ctx,p,m){
+  gridBg(ctx);const th=m.params.theta*Math.PI/180,v=1,perp=v*Math.sin(th),para=v*Math.cos(th);
+  // 左：圆周
+  const cx=200,cy=200,R=90;
+  cross(ctx,70,80,330,330,48);
+  const a=p*2*Math.PI;
+  poly(ctx,Array.from({length:80},(_,i)=>[cx+R*Math.cos(i/79*2*Math.PI),cy+R*Math.sin(i/79*2*Math.PI)]),C.dash,1.6,[6,5]);
+  dot(ctx,cx+R*Math.cos(a),cy+R*Math.sin(a),7,C.red,true);
+  arr(ctx,cx,cy,cx+R,cy,C.blue,1.8,7);
+  txt(ctx,'v⊥ → 圆周',cx,350,14,C.sub,'center');
+  txt(ctx,'r = mv sinθ/(qB)',cx,370,14,C.blue,'center');
+  // 右：螺旋（透视图）
+  const sx=500,sy=200,R2=58,turns=3;
+  for(let k=0;k<turns;k++){
+    const hseg=[];
+    for(let j=0;j<=30;j++){
+      const t=(k+j/30)/turns, aa=t*2*Math.PI*turns;
+      hseg.push([sx+R2*Math.cos(aa),sy+R2*0.32*Math.sin(aa)-t*40]);
+    }
+    poly(ctx,hseg,C.orange,2);
+  }
+  const t=p, aa=t*2*Math.PI*turns;
+  dot(ctx,sx+R2*Math.cos(aa),sy+R2*0.32*Math.sin(aa)-t*40,6,C.red,true);
+  arr(ctx,sx,sy+120,sx,sy+80,C.green,2,8);txt(ctx,'B',sx-16,sy+104,14,C.green);
+  txt(ctx,'v∥ → 匀速直线',sx,350,14,C.sub,'center');
+  txt(ctx,'h = v cosθ·T',sx,370,14,C.blue,'center');
+ }
+};
+
+/* ========== 框架（与八大模型一致） ========== */
+function setupCanvas(cv,m){
+  const dpr=window.devicePixelRatio||1,cssW=cv.clientWidth||640,cssH=cssW*H/W;
+  cv.style.height=cssH+'px';cv.width=Math.round(cssW*dpr);cv.height=Math.round(cssH*dpr);
+  const ctx=cv.getContext('2d');
+  return ()=>{ctx.setTransform(cv.width/W,0,0,cv.height/H,0,0);m.draw(ctx,m.t/m.duration,m);};
+}
+const app=[];
+for(let i=1;i<=8;i++){
+  const m=Object.assign({t:0,playing:true,visible:false,userPaused:false},models[i]);
+  const cv=document.querySelector('canvas[data-c="'+i+'"]'),render=setupCanvas(cv,m);
+  const playBtn=document.querySelector('button[data-play="'+i+'"]');
+  const resetBtn=document.querySelector('button[data-reset="'+i+'"]');
+  const slider=document.querySelector('input[data-p="'+i+'"]');
+  const readout=document.querySelector('span[data-r="'+i+'"]');
+  if(slider)slider.addEventListener('input',()=>{
+    const v=parseFloat(slider.value);
+    if(i===4){m.params.I=v;}
+    else if(i===8)m.params.theta=v;
+    else m.params[['v','v','v','I','U','U','I','theta'][i-1]]=v;
+    m.t=0;
+  });
+  const toggle=document.querySelector('button[data-toggle="'+i+'"]');
+  if(toggle)toggle.addEventListener('click',()=>{
+    m.params.electron=!m.params.electron;
+    toggle.textContent='载流子：'+(m.params.electron?'电子':'空穴');
+  });
+  playBtn.addEventListener('click',()=>{m.userPaused=!m.userPaused;m.playing=!m.userPaused;playBtn.textContent=m.playing?'⏸ 暂停':'▶ 播放';});
+  resetBtn.addEventListener('click',()=>{m.t=0;m.playing=true;m.userPaused=false;playBtn.textContent='⏸ 暂停';});
+  app.push({m,render,playBtn,readout,i});
+}
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{const i=parseInt(e.target.id.slice(1)),a=app[i-1];
+    a.m.visible=e.isIntersecting&&e.intersectionRatio>0.12;
+    if(!a.m.visible&&!a.m.userPaused)a.m.playing=false;
+    else if(a.m.visible&&!a.m.userPaused)a.m.playing=true;
+    a.playBtn.textContent=a.m.playing?'⏸ 暂停':'▶ 播放';
+  });
+},{threshold:[0,0.12,0.4]});
+document.querySelectorAll('.card').forEach(c=>obs.observe(c));
+const navObs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting)document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id));});
+},{threshold:0.5});
+document.querySelectorAll('.card').forEach(c=>navObs.observe(c));
+let last=performance.now(),globalPaused=false;
+function frame(now){
+  const dt=Math.min(0.05,(now-last)/1000);last=now;
+  app.forEach(({m,render,i,readout})=>{
+    if(!globalPaused&&m.playing&&m.visible)m.t=(m.t+dt)%m.duration;
+    render();
+    if(i===1)readout.textContent='v₀ = '+m.params.v+' m/s';
+    if(i===2)readout.textContent='电动势 = '+(0.8*0.16*m.params.v).toFixed(2)+' V';
+    if(i===3)readout.textContent='Q = '+(Math.PI*0.1*0.1/4*m.params.v).toFixed(3)+' m³/s';
+    if(i===4)readout.textContent='U_H = '+(m.params.I*0.5/(8.5e28*1.6e-19*1e-3)*1e6).toFixed(2)+' μV';
+    if(i===5){
+      const rA=A=>Math.sqrt(2*A*1.66e-27*m.params.U/(1.6e-19))/0.5;
+      readout.textContent='落点间距 = '+(2*(rA(14)-rA(12))*100).toFixed(2)+' cm';
+    }
+    if(i===6)readout.textContent='Eₖmax = '+((1.6e-19)**2*1.2**2*0.5**2/(2*1.67e-27)/1.6e-13).toFixed(1)+' MeV';
+    if(i===7)readout.textContent='偏角 θ = '+(42*m.params.I/10).toFixed(1)+'°';
+    if(i===8)readout.textContent='r : T : h = '+(Math.sin(m.params.theta*Math.PI/180)).toFixed(2)+' : 1 : '+(2*Math.cos(m.params.theta*Math.PI/180)).toFixed(2);
+  });
+  requestAnimationFrame(frame);
+}
+const fixedP=parseFloat(new URLSearchParams(location.search).get('p'));
+if(!isNaN(fixedP)&&fixedP>=0&&fixedP<=1){
+  app.forEach(a=>{a.m.t=fixedP*a.m.duration;a.m.playing=false;a.m.userPaused=true;a.playBtn.textContent='▶ 播放';});
+  document.getElementById('globalBtn').textContent='▶ 全部播放';
+}
+requestAnimationFrame(frame);
+document.getElementById('globalBtn').addEventListener('click',e=>{
+  globalPaused=!globalPaused;e.target.textContent=globalPaused?'▶ 全部播放':'⏸ 全部暂停';
+});
+window.addEventListener('resize',()=>{
+  app.forEach((a,i)=>{a.render=setupCanvas(document.querySelector('canvas[data-c="'+(i+1)+'"]'),a.m);});
+});
+</script>
+</body>
+</html>
